@@ -63,6 +63,11 @@ st.markdown("""
     [data-testid="stSidebarCollapseButton"] {display: none !important;}
     .st-emotion-cache-1wbqy5l {display: none !important;}
     .st-emotion-cache-6qob1r {display: none !important;}
+    .viewerBadge_container__r5tak {display: none !important;}
+    .viewerBadge_link__qRIco {display: none !important;}
+    [data-testid="manage-app-button"] {display: none !important;}
+    .styles_viewerBadge__CvC9N {display: none !important;}
+    a[href*="streamlit.io"] {display: none !important;}
 
     /* Simple header */
     .main-header {
