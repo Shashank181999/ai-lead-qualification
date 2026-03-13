@@ -9,6 +9,10 @@ credentials.json
 # Output files
 qualified_leads.csv
 
+# Database files
+*.db
+leads_database.db
+
 # Python
 __pycache__/
 *.py[cod]

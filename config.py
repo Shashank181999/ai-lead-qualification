@@ -17,7 +17,7 @@ LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai")
 # Model settings
 OPENAI_MODEL = "gpt-4o-mini"
 ANTHROPIC_MODEL = "claude-3-haiku-20240307"
-GROQ_MODEL = "llama-3.1-70b-versatile"
+GROQ_MODEL = "llama-3.3-70b-versatile"
 
 # Google Sheets Configuration
 GOOGLE_SHEETS_CREDENTIALS_FILE = os.getenv("GOOGLE_SHEETS_CREDENTIALS_FILE", "credentials.json")

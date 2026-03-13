@@ -1,33 +1,41 @@
-# AI Lead Qualification Automation System
+# AI Lead Qualification System
 
-An AI-powered automation system that analyzes and qualifies sales leads automatically using LLM technology. The system processes leads from CSV files, generates intelligent lead scores, categorizes industries, identifies business needs, and provides actionable recommendations for the sales team.
+An AI-powered web application that automatically analyzes and qualifies sales leads using LLM technology.
 
 ## Features
 
-- **AI-Powered Analysis**: Uses OpenAI, Anthropic Claude, or Groq LLMs to analyze leads
-- **Intelligent Scoring**: Generates lead scores (0-100) based on multiple factors
-- **Industry Classification**: Automatically categorizes leads by industry
-- **Business Need Identification**: Extracts potential business needs from lead messages
-- **Actionable Recommendations**: Provides specific next steps for sales team
-- **Multiple Storage Options**: Save results to CSV or Google Sheets
-- **Flexible LLM Support**: Works with OpenAI, Anthropic, or Groq APIs
+- **AI-Powered Analysis**: Uses Groq LLM (Llama 3.3 70B) to analyze leads
+- **Lead Scoring**: Scores leads from 0-100 based on multiple factors
+- **Priority Classification**: Categorizes leads as High/Medium/Low priority
+- **Industry Detection**: Identifies the industry of each lead
+- **Business Need Identification**: Extracts potential business needs from messages
+- **Cloud Storage**: PostgreSQL database via Supabase
+- **Local Storage**: SQLite backup for offline access
+- **Export Options**: Download results as CSV or JSON
+- **Mobile Responsive**: Works on desktop and mobile devices
 
 ## System Architecture
 
 ```
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐     ┌─────────────┐
-│  CSV Input  │ ──► │  AI Analysis │ ──► │Lead Scoring │ ──► │   Storage   │
-│   (Leads)   │     │    (LLM)     │     │ & Priority  │     │ (CSV/Sheets)│
-└─────────────┘     └──────────────┘     └─────────────┘     └─────────────┘
+CSV Upload --> AI Analysis (Groq LLM) --> Lead Scoring --> Storage (PostgreSQL/SQLite)
 ```
 
-## Quick Start
+## Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Frontend | Streamlit (Python) |
+| AI/LLM | Groq API (Llama 3.3 70B) |
+| Cloud Database | PostgreSQL (Supabase) |
+| Local Database | SQLite |
+
+## Setup Instructions
 
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd project
+git clone https://github.com/YOUR_USERNAME/ai-lead-qualification.git
+cd ai-lead-qualification
 ```
 
 ### 2. Install Dependencies
@@ -36,159 +44,162 @@ cd project
 pip install -r requirements.txt
 ```
 
-### 3. Configure Environment
+### 3. Configure Environment Variables
 
-```bash
-# Copy the example environment file
-cp .env.example .env
+Create a `.env` file in the project root:
 
-# Edit .env with your API keys
-nano .env  # or use any text editor
+```env
+# LLM Provider
+LLM_PROVIDER=groq
+
+# Groq API Key (FREE - get from https://console.groq.com)
+GROQ_API_KEY=your_groq_api_key_here
+
+# PostgreSQL Connection (FREE - get from https://supabase.com)
+DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@aws-0-region.pooler.supabase.com:5432/postgres
 ```
 
-### 4. Run the System
+### 4. Get API Keys
+
+**Groq API (FREE)**:
+1. Go to [console.groq.com](https://console.groq.com)
+2. Sign up for free account
+3. Create API key
+4. Copy to `.env` file
+
+**Supabase PostgreSQL (FREE)**:
+1. Go to [supabase.com](https://supabase.com)
+2. Create new project
+3. Go to **Connect** > **Connection string** > **URI**
+4. Select **Session Pooler** mode
+5. Copy connection string to `.env` file
+
+### 5. Run the Application
 
 ```bash
-# Process the sample leads
-python main.py
-
-# Process with verbose output
-python main.py -v
-
-# Use a custom input file
-python main.py -i your_leads.csv
-
-# Save to both CSV and Google Sheets
-python main.py -g
+streamlit run app.py
 ```
 
-## Configuration
+The app will open at `http://localhost:8501`
 
-### Environment Variables
+## How to Use
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `LLM_PROVIDER` | LLM to use: `openai`, `anthropic`, or `groq` | Yes |
-| `OPENAI_API_KEY` | OpenAI API key | If using OpenAI |
-| `ANTHROPIC_API_KEY` | Anthropic API key | If using Anthropic |
-| `GROQ_API_KEY` | Groq API key | If using Groq |
-| `GOOGLE_SHEETS_CREDENTIALS_FILE` | Path to Google service account JSON | For Sheets |
-| `INPUT_CSV_PATH` | Default input CSV file | No |
-| `OUTPUT_CSV_PATH` | Default output CSV file | No |
+1. **Upload CSV**: Click "Browse files" and upload your leads CSV
+2. **Analyze**: Click "Analyze Leads" button
+3. **View Results**: See scored leads in card format
+4. **Save to Cloud**: Go to PostgreSQL tab and click "Save to PostgreSQL"
+5. **Download**: Export results as CSV or JSON
 
-### Input CSV Format
+## Input CSV Format
 
-Your input CSV should have these columns:
+Your CSV file should have these columns:
 
 | Column | Description |
 |--------|-------------|
 | Name | Lead's full name |
 | Email | Lead's email address |
-| Company Name | Name of the company |
-| Job Title | Lead's job title/position |
-| Message from Lead | The message or inquiry from the lead |
+| Company Name | Company/Organization name |
+| Job Title | Lead's position |
+| Message from Lead | Their inquiry message |
 
-Example:
+**Example:**
 ```csv
 Name,Email,Company Name,Job Title,Message from Lead
-Sarah Johnson,sarah@brighttech.io,BrightTech,VP of Operations,"Looking for automation tools..."
+Rahul Sharma,rahul@techindia.com,TechIndia Solutions,CEO,Looking for AI automation tools for our sales team. Budget approved for Q2.
+Priya Patel,priya@startupx.io,StartupX,Founder,Just raised Series A. Need CRM automation urgently.
 ```
 
-## Output
+## Lead Scoring System
 
-### Lead Score Interpretation
+The AI analyzes each lead and assigns a score based on:
 
 | Score Range | Priority | Description |
 |-------------|----------|-------------|
 | 80-100 | High | Hot lead - Decision maker, clear budget, immediate need |
-| 60-79 | High | Warm lead - Good fit, buying signals present |
-| 40-59 | Medium | Moderate lead - Potential fit, needs nurturing |
-| 20-39 | Low | Cool lead - Low priority, unclear fit |
-| 0-19 | Low | Cold/Invalid - Spam or no business potential |
+| 60-79 | Medium | Warm lead - Good fit, worth pursuing |
+| 40-59 | Medium | Moderate lead - Needs nurturing |
+| 0-39 | Low | Cold/Invalid - Low priority or spam |
 
-### Example Output
+### Scoring Factors
 
-```
-──────────────────────────────────────────────────
-Lead Name: Sarah Johnson
-Company: BrightTech Solutions
-Industry: SaaS / Technology
-Lead Score: 78
-Priority: High
-Business Need: Automation tools for internal operations
-Recommended Action: Schedule a demo call with the sales team
-──────────────────────────────────────────────────
-```
+The AI considers these factors when scoring:
 
-## Google Sheets Setup (Optional)
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing
-3. Enable Google Sheets API and Google Drive API
-4. Create a Service Account and download credentials JSON
-5. Save as `credentials.json` in the project directory
-6. Share the Google Sheet with the service account email
+1. **Job Title Seniority**: CEO, VP, Director = higher score
+2. **Company Size Indicators**: Large companies score higher
+3. **Message Clarity**: Specific needs = higher score
+4. **Budget Indicators**: Mentions of budget/funding increase score
+5. **Urgency Signals**: Words like "urgent", "immediately" increase score
+6. **Industry Fit**: Relevant industries score higher
 
 ## Project Structure
 
 ```
 project/
-├── main.py              # Main entry point and workflow orchestration
-├── lead_analyzer.py     # AI analysis module with LLM integration
-├── storage.py           # Storage handlers (CSV, Google Sheets)
-├── config.py            # Configuration settings
-├── requirements.txt     # Python dependencies
-├── sample_leads.csv     # Sample input data (25 leads)
-├── .env.example         # Environment template
-└── README.md            # This file
+├── app.py                 # Main Streamlit web interface
+├── lead_analyzer.py       # AI analysis module (Groq integration)
+├── config.py              # Configuration settings
+├── storage.py             # Data formatting utilities
+├── database.py            # SQLite local storage
+├── postgresql_storage.py  # PostgreSQL/Supabase integration
+├── requirements.txt       # Python dependencies
+├── sample_leads.csv       # Sample input data
+├── .env                   # Environment variables (not in git)
+└── README.md              # This file
 ```
 
-## CLI Options
+## How AI Analysis Works
+
+1. **Input Processing**: Each lead's data is formatted into a structured prompt
+2. **LLM Analysis**: Groq's Llama 3.3 70B model analyzes the lead
+3. **Scoring**: AI returns JSON with score, industry, business need, and recommended action
+4. **Priority Assignment**: Score is mapped to priority (High/Medium/Low)
+5. **Storage**: Results saved to PostgreSQL and local SQLite
+
+### Sample AI Prompt
 
 ```
-usage: main.py [-h] [-i INPUT] [-o OUTPUT] [-g] [-v] [--provider {openai,anthropic,groq}]
+Lead Information:
+- Name: Rahul Sharma
+- Email: rahul@techindia.com
+- Company: TechIndia Solutions
+- Job Title: CEO
+- Message: Looking for AI automation tools...
 
-AI-powered Lead Qualification Automation System
+Analyze and provide:
+- lead_score (0-100)
+- industry
+- business_need
+- recommended_action
+```
 
-options:
-  -h, --help            show this help message and exit
-  -i, --input           Input CSV file with leads (default: sample_leads.csv)
-  -o, --output          Output CSV file for results (default: qualified_leads.csv)
-  -g, --google-sheets   Also save results to Google Sheets
-  -v, --verbose         Print detailed output for each lead
-  --provider            Override LLM provider (openai, anthropic, groq)
+## Troubleshooting
+
+**PostgreSQL Connection Error**:
+- Use Session Pooler URL (not Direct Connection)
+- Verify password in connection string
+- Check if Supabase project is active
+
+**Groq API Error**:
+- Verify API key is correct
+- Check rate limits (free tier: 30 requests/minute)
+- Ensure model name is correct: `llama-3.3-70b-versatile`
+
+**App Not Loading**:
+```bash
+# Kill existing streamlit processes
+pkill -f streamlit
+
+# Restart
+streamlit run app.py
 ```
 
 ## API Costs
 
-Estimated costs per lead analysis:
-
-| Provider | Model | Cost per Lead |
-|----------|-------|---------------|
-| OpenAI | gpt-4o-mini | ~$0.001 |
-| Anthropic | claude-3-haiku | ~$0.001 |
-| Groq | llama-3.1-70b | Free (rate limited) |
-
-## Troubleshooting
-
-### Common Issues
-
-1. **API Key Error**: Ensure your API key is correctly set in `.env`
-2. **Module Not Found**: Run `pip install -r requirements.txt`
-3. **Google Sheets Error**: Check service account permissions and credentials file
-4. **Rate Limiting**: Add delays between API calls if processing many leads
-
-### Debug Mode
-
-```bash
-# Run with verbose output to see detailed analysis
-python main.py -v
-```
+| Provider | Model | Cost |
+|----------|-------|------|
+| Groq | Llama 3.3 70B | FREE |
+| Supabase | PostgreSQL | FREE (up to 500MB) |
 
 ## License
 
 MIT License
-
-## Author
-
-Built for AI Lead Qualification Assessment

@@ -36,7 +36,7 @@ Analyze this lead and provide your assessment in the following JSON format:
     "lead_score": <number between 0-100>,
     "industry": "<industry category>",
     "business_need": "<brief description of their business need>",
-    "recommended_action": "<specific action for sales team>",
+    "recommended_action": "<SHORT action, max 5 words like: Schedule demo, Call immediately, Send proposal, Ignore>",
     "reasoning": "<brief explanation of the score>"
 }}
 
