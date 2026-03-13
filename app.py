@@ -59,6 +59,10 @@ st.markdown("""
     header {visibility: hidden !important;}
     footer {visibility: hidden !important;}
     .stApp > header {display: none !important;}
+    [data-testid="stLogo"] {display: none !important;}
+    [data-testid="stSidebarCollapseButton"] {display: none !important;}
+    .st-emotion-cache-1wbqy5l {display: none !important;}
+    .st-emotion-cache-6qob1r {display: none !important;}
 
     /* Simple header */
     .main-header {
