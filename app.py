@@ -90,21 +90,20 @@ st.markdown("""
         width: 100% !important;
     }
 
-    /* Mobile table fix - no horizontal scroll */
+    /* Desktop/Mobile view switching */
+    .desktop-only {
+        display: block;
+    }
+    .mobile-only {
+        display: none;
+    }
+
     @media (max-width: 768px) {
-        [data-testid="stDataFrame"] > div {
-            overflow-x: hidden !important;
+        .desktop-only {
+            display: none !important;
         }
-        [data-testid="stDataFrame"] table {
-            font-size: 0.7rem !important;
-        }
-        [data-testid="stDataFrame"] th,
-        [data-testid="stDataFrame"] td {
-            padding: 4px 6px !important;
-            max-width: 80px !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            white-space: nowrap !important;
+        .mobile-only {
+            display: block !important;
         }
     }
 </style>
@@ -240,37 +239,57 @@ if 'results' in st.session_state:
 
         display_df = results_df.copy()
         display_df['Action'] = display_df['Recommended Action'].apply(short_action)
-
-        # Card layout for each lead
         sorted_df = display_df.sort_values('Lead Score', ascending=False)
 
+        # Desktop: Table view
+        display_cols = ['Name', 'Company Name', 'Lead Score', 'Priority', 'Industry', 'Action']
+        st.markdown('<div class="desktop-only">', unsafe_allow_html=True)
+        st.dataframe(
+            sorted_df[display_cols],
+            use_container_width=True,
+            height=400
+        )
+        st.markdown('</div>', unsafe_allow_html=True)
+
+        # Mobile: Card view
+        st.markdown('<div class="mobile-only">', unsafe_allow_html=True)
         for _, row in sorted_df.iterrows():
-            priority_color = {"High": "🟢", "Medium": "🟡", "Low": "🔴"}.get(row['Priority'], "⚪")
-            with st.container():
-                st.markdown(f"""
-                <div style="background: #1e1e1e; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid {'#22c55e' if row['Priority']=='High' else '#eab308' if row['Priority']=='Medium' else '#ef4444'};">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong style="font-size: 1rem;">{row['Name']}</strong>
-                        <span style="background: {'#22c55e' if row['Priority']=='High' else '#eab308' if row['Priority']=='Medium' else '#ef4444'}; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">{row['Lead Score']}</span>
-                    </div>
-                    <div style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">{row['Company Name']}</div>
-                    <div style="display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap;">
-                        <span style="font-size: 0.75rem; background: #333; padding: 2px 6px; border-radius: 4px;">{row['Industry']}</span>
-                        <span style="font-size: 0.75rem; background: #333; padding: 2px 6px; border-radius: 4px;">{row['Priority']}</span>
-                        <span style="font-size: 0.75rem; background: #2563eb; padding: 2px 6px; border-radius: 4px;">{row['Action']}</span>
-                    </div>
+            st.markdown(f"""
+            <div style="background: #1e1e1e; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid {'#22c55e' if row['Priority']=='High' else '#eab308' if row['Priority']=='Medium' else '#ef4444'};">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="font-size: 1rem;">{row['Name']}</strong>
+                    <span style="background: {'#22c55e' if row['Priority']=='High' else '#eab308' if row['Priority']=='Medium' else '#ef4444'}; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem;">{row['Lead Score']}</span>
                 </div>
-                """, unsafe_allow_html=True)
+                <div style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">{row['Company Name']}</div>
+                <div style="display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap;">
+                    <span style="font-size: 0.75rem; background: #333; padding: 2px 6px; border-radius: 4px;">{row['Industry']}</span>
+                    <span style="font-size: 0.75rem; background: #333; padding: 2px 6px; border-radius: 4px;">{row['Priority']}</span>
+                    <span style="font-size: 0.75rem; background: #2563eb; padding: 2px 6px; border-radius: 4px;">{row['Action']}</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with tab2:
         high_df = results_df[results_df['Priority'] == 'High'].copy()
         high_df['Action'] = high_df['Recommended Action'].apply(short_action)
-
         sorted_high = high_df.sort_values('Lead Score', ascending=False)
 
         if len(sorted_high) == 0:
             st.info("No high priority leads found")
         else:
+            # Desktop: Table view
+            display_cols = ['Name', 'Company Name', 'Lead Score', 'Priority', 'Industry', 'Action']
+            st.markdown('<div class="desktop-only">', unsafe_allow_html=True)
+            st.dataframe(
+                sorted_high[display_cols],
+                use_container_width=True,
+                height=400
+            )
+            st.markdown('</div>', unsafe_allow_html=True)
+
+            # Mobile: Card view
+            st.markdown('<div class="mobile-only">', unsafe_allow_html=True)
             for _, row in sorted_high.iterrows():
                 st.markdown(f"""
                 <div style="background: #1e1e1e; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #22c55e;">
@@ -285,6 +304,7 @@ if 'results' in st.session_state:
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
 
     with tab3:
         col1, col2 = st.columns(2)
