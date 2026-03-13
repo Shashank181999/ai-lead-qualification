@@ -6,13 +6,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def get_secret(key, default=None):
+    """Get secret from Streamlit secrets or environment"""
+    try:
+        import streamlit as st
+        if key in st.secrets:
+            return st.secrets[key]
+    except:
+        pass
+    return os.getenv(key, default)
+
 # LLM Configuration
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+OPENAI_API_KEY = get_secret("OPENAI_API_KEY")
+ANTHROPIC_API_KEY = get_secret("ANTHROPIC_API_KEY")
+GROQ_API_KEY = get_secret("GROQ_API_KEY")
 
 # Choose which LLM to use: "openai", "anthropic", or "groq"
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai")
+LLM_PROVIDER = get_secret("LLM_PROVIDER", "openai")
 
 # Model settings
 OPENAI_MODEL = "gpt-4o-mini"

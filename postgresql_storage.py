@@ -9,8 +9,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def get_database_url():
+    """Get DATABASE_URL from Streamlit secrets or environment"""
+    try:
+        import streamlit as st
+        if "DATABASE_URL" in st.secrets:
+            return st.secrets["DATABASE_URL"]
+    except:
+        pass
+    return os.getenv("DATABASE_URL")
+
 # Supabase PostgreSQL connection
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = get_database_url()
 
 
 def get_connection():
