@@ -60,6 +60,16 @@ st.markdown("""
     footer {visibility: hidden !important;}
     .stApp > header {display: none !important;}
 
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #1e1e2e 0%, #2d1b4e 100%);
+    }
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3 {
+        color: #a78bfa !important;
+    }
+
     /* Main container styling */
     .main .block-container {
         padding-top: 2rem;
@@ -169,7 +179,7 @@ st.markdown("""
 
 # Sidebar
 with st.sidebar:
-    st.header("About")
+    st.markdown("### About")
     st.markdown("""
     This system analyzes leads and provides:
     - **Lead Score** (0-100)
@@ -180,13 +190,15 @@ with st.sidebar:
 
     st.divider()
 
-    st.header("Scoring Guide")
+    st.markdown("### Scoring Guide")
     st.markdown("""
-    - **80-100**: Hot Lead
-    - **60-79**: Warm Lead
-    - **40-59**: Moderate Lead
-    - **0-39**: Cold/Invalid
-    """)
+    <div style="line-height: 2;">
+        <span style="color: #22c55e; font-weight: bold;">80-100</span>: Hot Lead<br>
+        <span style="color: #eab308; font-weight: bold;">60-79</span>: Warm Lead<br>
+        <span style="color: #f97316; font-weight: bold;">40-59</span>: Moderate Lead<br>
+        <span style="color: #ef4444; font-weight: bold;">0-39</span>: Cold/Invalid
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # Main content
