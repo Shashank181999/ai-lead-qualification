@@ -137,16 +137,6 @@ with st.sidebar:
     - **0-39**: Cold/Invalid
     """)
 
-    st.divider()
-
-    # Connection Status
-    st.header("Status")
-    pg_connected = cached_pg_check()
-    if pg_connected:
-        st.success("PostgreSQL: Connected")
-    else:
-        st.warning("PostgreSQL: Not connected")
-    st.success("Local DB: Connected")
 
 # Main content
 col1, col2 = st.columns([2, 1])
