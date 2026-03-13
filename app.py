@@ -48,9 +48,10 @@ st.set_page_config(
     menu_items={}
 )
 
-# Hide deploy button and menu immediately
+# Custom CSS for better UI
 st.markdown("""
 <style>
+    /* Hide Streamlit elements */
     #MainMenu {visibility: hidden !important;}
     .stDeployButton {display: none !important;}
     [data-testid="stToolbar"] {display: none !important;}
@@ -59,61 +60,112 @@ st.markdown("""
     footer {visibility: hidden !important;}
     .stApp > header {display: none !important;}
 
-    /* Mobile responsive */
-    @media (max-width: 768px) {
-        [data-testid="stSidebar"] {
-            display: none !important;
-        }
-        h1, h2, h3 {
-            font-size: 1.3rem !important;
-        }
-        .stTabs [data-baseweb="tab"] {
-            font-size: 0.7rem !important;
-            padding: 6px !important;
-        }
+    /* Main container styling */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 
-    /* Force 2x2 grid for metrics on mobile */
-    @media (max-width: 800px) {
-        [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 10px !important;
-        }
-        [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) > [data-testid="column"] {
-            width: 100% !important;
-        }
+    /* Header styling */
+    .main-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        color: white;
+    }
+    .main-header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+    }
+    .main-header p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
     }
 
-    /* Fix table - no scroll */
-    [data-testid="stDataFrame"] {
-        width: 100% !important;
+    /* Metric cards */
+    [data-testid="stMetric"] {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        padding: 1rem;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+    }
+    [data-testid="stMetricValue"] {
+        font-size: 2rem !important;
+        color: #22c55e !important;
+    }
+
+    /* Tabs styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background: #1e293b;
+        border-radius: 8px;
+        padding: 10px 20px;
+        color: white;
+    }
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    }
+
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+    }
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
     }
 
     /* Desktop/Mobile view switching */
-    .desktop-only {
-        display: block;
-    }
-    .mobile-only {
-        display: none;
-    }
+    .desktop-only { display: block; }
+    .mobile-only { display: none; }
 
+    /* Mobile responsive */
     @media (max-width: 768px) {
-        .desktop-only {
-            display: none !important;
+        [data-testid="stSidebar"] { display: none !important; }
+
+        .main .block-container {
+            padding: 1rem;
         }
-        .mobile-only {
-            display: block !important;
+
+        h1, h2, h3 { font-size: 1.2rem !important; }
+
+        .stTabs [data-baseweb="tab"] {
+            font-size: 0.7rem !important;
+            padding: 8px 12px !important;
+        }
+
+        .desktop-only { display: none !important; }
+        .mobile-only { display: block !important; }
+
+        /* 2x2 grid for metrics */
+        [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+        }
+        [data-testid="stMetric"] {
+            padding: 0.75rem;
+        }
+        [data-testid="stMetricValue"] {
+            font-size: 1.5rem !important;
         }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Header
-st.markdown("## AI Lead Qualification System")
-st.markdown("Automatically analyze and score your sales leads using AI")
-
-st.divider()
+# Header with gradient
+st.markdown("""
+<div class="main-header">
+    <h1>AI Lead Qualification System</h1>
+    <p>Automatically analyze and score your sales leads using AI</p>
+</div>
+""", unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
