@@ -34,7 +34,7 @@ CSV Upload --> AI Analysis (Groq LLM) --> Lead Scoring --> Storage (PostgreSQL/S
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ai-lead-qualification.git
+git clone https://github.com/Shashank181999/ai-lead-qualification.git
 cd ai-lead-qualification
 ```
 
