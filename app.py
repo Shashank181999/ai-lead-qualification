@@ -48,7 +48,7 @@ st.set_page_config(
     menu_items={}
 )
 
-# Custom CSS for better UI
+# Simple CSS - Black and White theme
 st.markdown("""
 <style>
     /* Hide Streamlit elements */
@@ -60,75 +60,30 @@ st.markdown("""
     footer {visibility: hidden !important;}
     .stApp > header {display: none !important;}
 
-    /* Sidebar styling */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1e1e2e 0%, #2d1b4e 100%);
-    }
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 {
-        color: #a78bfa !important;
-    }
-
-    /* Main container styling */
-    .main .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-
-    /* Header styling */
+    /* Simple header */
     .main-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #111;
         padding: 1.5rem;
-        border-radius: 12px;
+        border-radius: 8px;
         margin-bottom: 1.5rem;
-        color: white;
+        border: 1px solid #333;
     }
     .main-header h1 {
         margin: 0;
         font-size: 1.8rem;
+        color: white;
     }
     .main-header p {
         margin: 0.5rem 0 0 0;
-        opacity: 0.9;
+        color: #aaa;
     }
 
     /* Metric cards */
     [data-testid="stMetric"] {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        background: #1a1a1a;
         padding: 1rem;
-        border-radius: 10px;
-        border-left: 4px solid #667eea;
-    }
-    [data-testid="stMetricValue"] {
-        font-size: 2rem !important;
-        color: #22c55e !important;
-    }
-
-    /* Tabs styling */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-    }
-    .stTabs [data-baseweb="tab"] {
-        background: #1e293b;
         border-radius: 8px;
-        padding: 10px 20px;
-        color: white;
-    }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    }
-
-    /* Button styling */
-    .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: none;
-        border-radius: 8px;
-        padding: 0.75rem 2rem;
-        font-weight: 600;
-    }
-    .stButton > button:hover {
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        border: 1px solid #333;
     }
 
     /* Desktop/Mobile view switching */
@@ -139,9 +94,7 @@ st.markdown("""
     @media (max-width: 768px) {
         [data-testid="stSidebar"] { display: none !important; }
 
-        .main .block-container {
-            padding: 1rem;
-        }
+        .main .block-container { padding: 1rem; }
 
         h1, h2, h3 { font-size: 1.2rem !important; }
 
@@ -158,12 +111,6 @@ st.markdown("""
             display: grid !important;
             grid-template-columns: 1fr 1fr !important;
             gap: 8px !important;
-        }
-        [data-testid="stMetric"] {
-            padding: 0.75rem;
-        }
-        [data-testid="stMetricValue"] {
-            font-size: 1.5rem !important;
         }
     }
 </style>
@@ -192,13 +139,11 @@ with st.sidebar:
 
     st.markdown("### Scoring Guide")
     st.markdown("""
-    <div style="line-height: 2;">
-        <span style="color: #22c55e; font-weight: bold;">80-100</span>: Hot Lead<br>
-        <span style="color: #eab308; font-weight: bold;">60-79</span>: Warm Lead<br>
-        <span style="color: #f97316; font-weight: bold;">40-59</span>: Moderate Lead<br>
-        <span style="color: #ef4444; font-weight: bold;">0-39</span>: Cold/Invalid
-    </div>
-    """, unsafe_allow_html=True)
+    - **80-100**: Hot Lead
+    - **60-79**: Warm Lead
+    - **40-59**: Moderate Lead
+    - **0-39**: Cold/Invalid
+    """)
 
 
 # Main content
